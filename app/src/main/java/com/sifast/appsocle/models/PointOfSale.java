@@ -5,16 +5,13 @@ package com.sifast.appsocle.models;
  */
 public class PointOfSale {
     private Location location;
-
+    public PointOfSale(){}
     public PointOfSale(Location location) {
-
         this.location = location;
     }
-
     public Location getLocation() {
         return location;
     }
-
     public void setLocation(Location location) {
         this.location = location;
     }

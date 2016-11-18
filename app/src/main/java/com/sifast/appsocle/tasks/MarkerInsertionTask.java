@@ -23,25 +23,20 @@ import com.sifast.appsocle.models.Location;
  */
 
 public class MarkerInsertionTask extends AsyncTask {
-
     private GoogleMap mMap;
-    Activity activity;
+    private Activity activity;
 
     public MarkerInsertionTask(GoogleMap mMap,Activity  activity) {
         this.activity=activity;
         this.mMap = mMap;
     }
-
-    public void connect() {
-        //TODO pass the context so i can call getResources
-        //setting connexion parameter
+    public void insertLoadedMarkers() {
+//setting connexion parameter
         String dbUrlPointOfSale=activity.getResources().getString(R.string.dbUrlPointOfSale);
         final Firebase ref = new Firebase(dbUrlPointOfSale);
         Query query = ref.orderByChild("longitude");
-
-        //get the data from the DB
+//get the data from the DB
         query.addListenerForSingleValueEvent(new ValueEventListener() {
-
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //checking if the user exist
@@ -57,12 +52,8 @@ public class MarkerInsertionTask extends AsyncTask {
                                 .title(markerTitle)
                                 .snippet(markerSnippet)).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
                         //if the password is true , the data will be storaged in the sharedPreferences file and a Home activity will be launched
-
-
                     }
-
                 } else {
-
                     Toast.makeText(activity.getApplicationContext(),activity.getBaseContext().getResources().getString(R.string.zeroMarkersMsg),Toast.LENGTH_LONG).show();
                 }
             }
@@ -77,7 +68,7 @@ public class MarkerInsertionTask extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
-        connect();
+        insertLoadedMarkers();
         return null;
     }
 

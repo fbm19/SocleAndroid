@@ -58,24 +58,20 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
-
-
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.setStatusBarColor(Color.parseColor("#9887B6"));
+            String codeStatusBarColor="#9887B6";
+            window.setStatusBarColor(Color.parseColor(codeStatusBarColor));
         }
-
-        actionBarTitle="Feedbacks";
+        actionBarTitle=getApplicationContext().getResources().getString(R.string.feedback);
         setTitle(actionBarTitle);
-
-//check if the user is connected with google
+        //check if the user is connected with google
         try {
     if (!FirebaseAuth.getInstance().getCurrentUser().equals(null)) {
-
         Menu nav_Menu = navigationView.getMenu();
         nav_Menu.findItem(R.id.icSettings).setVisible(false);
     }
@@ -90,35 +86,27 @@ catch (Exception myExp){
         loadFeedbacks();
         progress.dismiss();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        //TODO test this
         //get the auth user is data
         String username = sharedPreferences.getString("username", null);
         String email = sharedPreferences.getString("email", null);
         String password = sharedPreferences.getString("password", null);
-
         authUser = new User(username, email, password, null, null);
-
-
-
     }
 
     public void loadFeedbacks() {
-
         //load feedback
         ProgressDialog progress = ProgressDialog.show(this,  getBaseContext().getResources().getString(R.string.feedbackLoadingMsg),
                 getBaseContext().getResources().getString(R.string.waitMsg), true);
         //get connected user
         String username;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        //TODO test this
         username = sharedPreferences.getString("username", null);
         User user = new User(username, null, null, null, null);
         //setting connexion parameter
         Firebase.setAndroidContext(getApplicationContext());
-        String dbFeedbackUrl=getApplicationContext().getResources().getString(R.string.dbUrlFaeedbacks);;
+        String dbFeedbackUrl=getApplicationContext().getResources().getString(R.string.dbUrlFaeedbacks);
         final Firebase ref = new Firebase(dbFeedbackUrl);
         Query query = ref.orderByChild("declaredBy").equalTo(user.getUsername());
-
         //get the data from th DB
         query.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -143,17 +131,13 @@ catch (Exception myExp){
                     fragmentManager.beginTransaction().replace(R.id.myCont, listFragment).commit();
                     Toast.makeText(getApplicationContext(),  getBaseContext().getResources().getString(R.string.zeroAlertToast),Toast.LENGTH_LONG).show();
                 }
-
             }
-
-
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 Log.e("Feedbacks Problem","Check the db Connexion");           }
         });
 
         progress.dismiss();
-
     }
 
     @Override
@@ -168,8 +152,7 @@ catch (Exception myExp){
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        // Inflate the menu; this adds items to the action bar if it is present.
+    // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
         TextView txtUsernameMenu= (TextView) findViewById(R.id.txtUsernameMenu);
         txtUsernameMenu.setText( getBaseContext().getResources().getString(R.string.connectedUserLabel)+authUser.getUsername());
@@ -182,14 +165,11 @@ catch (Exception myExp){
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logOut) {
-
             logOut();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -213,23 +193,18 @@ catch (Exception myExp){
         try {
             startActivity(myAppLinkToMarket);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, " unable to find market app", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getApplicationContext().getResources().getString(R.string.marketToast), Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.icHistory) {
-
-
             loadFeedbacks();
             actionBarTitle= getBaseContext().getResources().getString(R.string.feedback);
             setTitle(actionBarTitle);
-
         } else if (id == R.id.icPin) {
             LocationManager locManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
             if (!locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -241,17 +216,14 @@ catch (Exception myExp){
             //open map fragment
             fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.myCont, new GMapFragment()).commit();
-            actionBarTitle="Géolocation";
+            actionBarTitle=getApplicationContext().getResources().getString(R.string.geolocatioLabel);
             setTitle(actionBarTitle);
         } else if (id == R.id.icSettings) {
-
-
             FragSettings frag = new FragSettings(authUser);
             fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.myCont, frag).commit();
-            actionBarTitle="Settings";
+            actionBarTitle=getApplicationContext().getResources().getString(R.string.action_settings);
             setTitle(actionBarTitle);
-
         } else if (id == R.id.icStar) {
             launchMarket();
         } else if (id == R.id.icInfo) {
@@ -261,9 +233,7 @@ catch (Exception myExp){
             fragmentManager.beginTransaction().replace(R.id.myCont, about).commit();
             actionBarTitle= getBaseContext().getResources().getString(R.string.abtLabel);
             setTitle(actionBarTitle);
-
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

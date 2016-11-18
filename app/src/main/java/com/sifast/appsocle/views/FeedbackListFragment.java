@@ -18,13 +18,10 @@ import java.util.List;
  * Created by Asus on 15/07/2016.
  */
 public class FeedbackListFragment extends Fragment {
-
     private List<Feedback> feedbackList;
-
     public FeedbackListFragment(List<Feedback> feedbackList) {
         this.feedbackList = feedbackList;
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragfeedback, container, false);
@@ -36,18 +33,14 @@ public class FeedbackListFragment extends Fragment {
         listView.setAdapter(adapter);
         return view;
     }
-
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 
     public List<Feedback> getFeedbackList() {
         return feedbackList;
     }
-
     public void setFeedbackList(List<Feedback> feedbackList) {
         this.feedbackList = feedbackList;
     }

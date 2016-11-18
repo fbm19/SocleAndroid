@@ -8,14 +8,12 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.sifast.appsocle.models.GMail;
+import com.sifast.appsocle.Services.GMail;
 
 import java.util.List;
 
 public class MailSendingTask extends AsyncTask {
-
     private ProgressDialog statusDialog;
-
     @Override
     protected Object doInBackground(Object... args) {
         try {
@@ -36,11 +34,9 @@ public class MailSendingTask extends AsyncTask {
         }
         return null;
     }
-
     public ProgressDialog getStatusDialog() {
         return statusDialog;
     }
-
     public void setStatusDialog(ProgressDialog statusDialog) {
         this.statusDialog = statusDialog;
     }

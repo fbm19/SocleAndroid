@@ -15,7 +15,6 @@ public class Feedback {
 
     public Feedback() {
     }
-
     public String getDeclaredBy() {
         return declaredBy;
     }

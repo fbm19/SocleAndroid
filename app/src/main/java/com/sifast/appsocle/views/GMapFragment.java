@@ -40,7 +40,7 @@ import java.util.Date;
 
 public class GMapFragment extends Fragment implements OnMapReadyCallback, LocationListener, GoogleMap.OnMarkerClickListener {
     private GoogleMap mMap;
-    private Dialog dialog;
+
 
     @Nullable
     @Override
@@ -53,7 +53,6 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Locati
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-        //TODO  handle this api version exception
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
             //puting the map in the fragment
             MapFragment fragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.myMap2);
@@ -77,10 +76,14 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Locati
         LatLng mypos = new LatLng(location.getLatitude(), location.getLongitude());
 
         //camera annimation
+        int zoomValue=70;
+        int bearingValue=45;
+        int titl=65;
+
         CameraPosition camPos = new CameraPosition.Builder().target(mypos)
-                .zoom(70)
-                .bearing(45)
-                .tilt(65)
+                .zoom(zoomValue)
+                .bearing(bearingValue)
+                .tilt(titl)
                 .build();
         CameraUpdate camUpd3 = CameraUpdateFactory.newCameraPosition(camPos);
         mMap.animateCamera(camUpd3);
@@ -116,11 +119,14 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Locati
             // Called when a new location is found by the network location provider.
             public void onLocationChanged(Location location) {
                 // setting the camera of the map to insert the marker in the current position
+                int zoomValue=15;
+                int bearingValue=45;
+                int titl=70;
                 LatLng myLaLn = new LatLng(location.getLatitude(), location.getLongitude());
                 CameraPosition camPos = new CameraPosition.Builder().target(myLaLn)
-                        .zoom(15)
-                        .bearing(45)
-                        .tilt(70)
+                        .zoom(zoomValue)
+                        .bearing(bearingValue)
+                        .tilt(titl)
                         .build();
 
                 CameraUpdate camUpd3 = CameraUpdateFactory.newCameraPosition(camPos);
@@ -145,11 +151,10 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Locati
             public void onProviderDisabled(String provider) {
             }
         };
-//        locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,  locationListener);
-        //set the frequency of updates
-        //TODO check this permission
+
+
         if (ActivityCompat.checkSelfPermission(this.getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
+
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -169,15 +174,15 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Locati
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         getMyLocation();
-        final Date date = new Date();
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
 
                                           @Override
                                           public boolean onMarkerClick(final Marker marker) {
                                               //  Take some action here
-                                              dialog = new Dialog(getActivity());
+                                               final Dialog dialog = new Dialog(getActivity());
                                               dialog.setContentView(R.layout.fragment_feedback);
                                               dialog.setTitle(getActivity().getBaseContext().getResources().getString(R.string.feedback));
+                                              final Date date = new Date();
                                               final Button butCancel, butSendFeedBack;
 
                                               butCancel = (Button) dialog.findViewById(R.id.butCancelFeedback);
@@ -188,7 +193,7 @@ public class GMapFragment extends Fragment implements OnMapReadyCallback, Locati
                                                   public void onClick(View v) {
 
                                                       SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                                                      //TODO test this
+
                                                       String username = sharedPreferences.getString("username", null);
                                                       User user = new User(username, null, null, null, null);
                                                       EditText txtFeedback = (EditText) dialog.findViewById(R.id.txtFeedback);

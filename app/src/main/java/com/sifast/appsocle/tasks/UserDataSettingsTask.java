@@ -14,7 +14,9 @@ import com.sifast.appsocle.R;
  * Created by Asus on 29/07/2016.
  */
 public class UserDataSettingsTask extends AsyncTask {
-    String mail, password, username;
+    String mail;
+    String password;
+    String username;
     Activity activity;
 
     public UserDataSettingsTask(String mail, String password, String username,Activity activity) {
@@ -23,15 +25,12 @@ public class UserDataSettingsTask extends AsyncTask {
         this.username = username;
         this.activity=activity;
     }
-
     public void resetData() {
         //setting connexion parameter
         String dbUsersUrl =activity.getResources().getString(R.string.dbUsersUrl);
         final Firebase ref = new Firebase(dbUsersUrl);
         Query query = ref.orderByChild("username").equalTo(username);
-
         query.addListenerForSingleValueEvent(new ValueEventListener() {
-
             //set the new password in the db
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot snapshot) {
@@ -42,16 +41,12 @@ public class UserDataSettingsTask extends AsyncTask {
                     }
                     Firebase statusRefMail = user.child("email").getRef();
                     statusRefMail.setValue(mail);
-
                 }
             }
-
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 Log.e("can't register","database problem");
             }
-
-
         });
     }
 

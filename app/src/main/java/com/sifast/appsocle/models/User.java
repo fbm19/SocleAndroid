@@ -16,9 +16,7 @@ public class User {
     }
 
     public User() {
-
     }
-
     public String getEmail() {
         return email;
     }
@@ -57,16 +55,5 @@ public class User {
 
     public void setSignUpDate(String signUpDate) {
         this.signUpDate = signUpDate;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", dateOfBirth='" + dateOfBirth + '\'' +
-                ", signUpDate='" + signUpDate + '\'' +
-                '}';
     }
 }

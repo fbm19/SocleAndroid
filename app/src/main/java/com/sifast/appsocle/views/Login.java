@@ -34,7 +34,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.sifast.appsocle.R;
 import com.sifast.appsocle.models.User;
@@ -50,12 +49,10 @@ import static com.sifast.appsocle.R.id.txtViewLinKForgetPass;
 public class Login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "Login";
     private static final int RC_Sigin_In = 9001;
-    boolean checkInputs = true;
+    public boolean  checkInputs = false;
     private Dialog dialogMail;
-    private EditText txtMailDialog;
     private Button butReset;
     private String mail;
-    private Dialog dialog;
     private TextView txtViewRegister;
     private EditText txtUsername, txtPassword;
     private Button butLogin;
@@ -66,9 +63,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private GoogleApiClient mGoogleApiClient;
-     private  static final  int RC_SIGN_IN=1;
-
-
+    private  static final  int RC_SIGN_IN=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,15 +80,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         logIn();
         autoFill();
         resetPassword();
-        //
         mAuth=FirebaseAuth.getInstance();
         //check if the user is connecting with google
         mAuthStateListener= new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() !=null){
-
-
                     String username = mAuth.getCurrentUser().getDisplayName();
                     String email= mAuth.getCurrentUser().getEmail();
                     User authentificatedUser = new User(username, null, email, null, null);
@@ -102,16 +94,11 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 }
             }
         };
-
-
-
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-
-
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext()).enableAutoManage(this,new GoogleApiClient.OnConnectionFailedListener(){
@@ -122,20 +109,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             }
         }).addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
-
         googleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             signIn();
 
             } });
-
-
-
-
-
-
     }
 
     private void signIn(){
@@ -153,8 +132,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
-
-
             } else {
                 // Google Sign In failed, update UI appropriate
                 Toast.makeText(getApplicationContext(),getBaseContext().getResources().getString(R.string.googleSignInError),Toast.LENGTH_LONG).show();
@@ -165,14 +142,12 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
@@ -181,7 +156,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                             Toast.makeText(Login.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
     }
@@ -192,7 +166,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             @Override
             public void onClick(View v) {
                 //opening the home activity
-                Intent i = new Intent(getApplicationContext(), Registeration.class);
+                Intent i = new Intent(getApplicationContext(), Registration.class);
                 startActivity(i);
             }
         });
@@ -202,49 +176,42 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         return pattern.matcher(email).matches();
     }
-
-    public void checkEmail(final String mail) {
+    public boolean checkEmail( String mail) {
+    //this function allow to check if the email exist
         checkInputs=true;
-        //this function allow to check if the email exist
         Firebase.setAndroidContext(getApplicationContext());
         if (checkEmailRegularExp(mail)) {
             //setting connexion parameter
             String dbUrlUsers=getBaseContext().getResources().getString(R.string.dbUsersUrl);
             final Firebase ref = new Firebase(dbUrlUsers);
             Query query = ref.orderByChild("email").equalTo(String.valueOf(mail));
-
-
             //get the data from th DB
             query.addListenerForSingleValueEvent(new ValueEventListener() {
-
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     //checking if the user exist
-                    if (! dataSnapshot.exists()) {
-                        checkInputs = false;
+                    if (dataSnapshot.exists()) {
+                        checkInputs = true;
 
                     }
-
+                    else checkInputs=false;
 
                 }
-
                 @Override
                 public void onCancelled(FirebaseError firebaseError) {
                 Log.e("Email problem","Can't check the email");
                 }
             });
-        } else checkInputs = false;
+
+        } else  checkInputs = false;
+        return checkInputs;
     }
 
     public void resetPassword() {
-
-
-
         //a function called once you click on register button
         txtViewForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkInputs=true;
                 dialogMail = new Dialog(Login.this);
                 dialogMail.setContentView(R.layout.dialogmail);
                 dialogMail.setTitle(getBaseContext().getResources().getString(R.string.forgotPasswordDialogTitle));
@@ -258,7 +225,7 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                         Firebase.setAndroidContext(getApplicationContext());
                         final EditText txtMail = (EditText) dialogMail.findViewById(R.id.txtMailDialog);
                         String mail = txtMail.getText().toString();
-                        checkEmail(mail);
+                        checkInputs=checkEmail(mail);
                         if (checkInputs) {
                             PasswordChangmentTask resetPasswordTask = new PasswordChangmentTask(Login.this, mail);
                             resetPasswordTask.execute();
@@ -268,8 +235,6 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                             txtMail.setError(getBaseContext().getResources().getString(R.string.notValidMailError));
                     }
                 });
-
-
             }
         });
     }
@@ -290,13 +255,8 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
                     RememberMeTask rememberMeTask = new RememberMeTask(sharedPreferences, authentificatedUser);
                     rememberMeTask.execute();
                 }
-
-
-
             }
         });
-
-
     }
 
     public void autoFill() {
@@ -305,27 +265,21 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
             @Override
             public void afterTextChanged(Editable s) {
             }
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String memorizedPass=sharedPreferences.getString(txtUsername.getText().toString() + "password", null);
                 txtPassword.setText(memorizedPass);
                 checkRememberMe.setChecked(true);
             }
-
-
         };
         txtUsername.addTextChangedListener(fieldValidatorTextWatcher);
-
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 
     @Override
@@ -337,22 +291,18 @@ public class Login extends AppCompatActivity implements GoogleApiClient.OnConnec
     public String getMail() {
         return mail;
     }
-
     public void setMail(String mail) {
         this.mail = mail;
     }
-
     public SharedPreferences getSharedPreferences() {
         return sharedPreferences;
     }
-
     public void setSharedPreferences(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
     }
     public static String getTAG() {
         return TAG;
     }
-
     public static int getRC_Sigin_In() {
         return RC_Sigin_In;
     }

@@ -8,32 +8,29 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Paramétres</string>
-    <string name="register">S inscrire</string>
+    <string name="register">S\'inscrire</string>
     <string name="login">Se connecter</string>
     <string name="title_activity_home">Accueil</string>
     <string name="title_activity_maps">Carte</string>
     <string name="welcome">Bienvenue</string>
-    <string name="remember_me">Me rappeler</string>
-
-
+    <string name="remember_me">Se souvenir de moi</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="about">A propos</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="geolocatioLabel"> Géolocalisation</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="the_current_version_is">La version courente est</string>
-    <string name="AboutText">Cette application à été développée en 2016 dans le cadre d un stage d étè à Sifast.Il S agit d un  socle Android</string>
+    <string name="the_current_version_is">La version courante est</string>
+    <string name="AboutText">Cette application a été développée en 2016 dans le cadre d\'un stage d\'étè à Sifast.Il s\'agit d\'un  socle Android</string>
     <string name="feedback">Feedback</string>
     <string name="cancel">Annuler</string>
     <string name="send_feedback">Envoyer une alerte</string>
     <string name="save">Enregister</string>
     <string name="emailWelcomeText">Nous sommes très heureux que vous avez rejoint notre application, nous espérons que vous apprécierez</string>
     <string name="welcomeSubject">Bienvenue dans notre application</string>
-    <string name="resetPasswordMailSubjet">"Nouveau mot de passe"</string>
+    <string name="resetPasswordMailSubjet"> Nouveau mot de passe </string>
     <string name="emailResetPassswordtext1"> "votre mot de passe a été changé et cela est le nouveau "</string>
-    <string name="emailResetPassswordtext2"> ", Nous vous conseillons de le changer.  \n meilleures salutations"</string>
+    <string name="emailResetPassswordtext2"> ".Nous vous conseillons de le changer.  \n meilleures salutations"</string>
     <string name="resetPasswordToast">Votre mot de passe a été changé</string>
     <string name="notValidMailError">Email non valide</string>
     <string name="googleSignInError">Connexion échouée avec Google</string>
@@ -42,11 +39,10 @@
     <string name="successfeedbackMessage">Alerte envoyée</string>
     <string name="markerTitle">Ma position</string>
     <string name="maPosition">Je suis là!!</string>
-    <string name="wrongPasswordError">Mot de passe éronée</string>
+    <string name="wrongPasswordError">Mot de passe éroné</string>
     <string name="tokenPasswordError">Ce mail est déjà pris</string>
     <string name="pswdsSemilarituError">Les mots de passe ne sont pas similaires</string>
     <string name="pswdShortError">Mot de passe court</string>
-
     <string name="feedbackLoadingMsg">Chargement des feedbacks</string>
     <string name="waitMsg">Attendez ...</string>
     <string name="zeroAlertToast">Vous avez 0 alertes</string>
@@ -57,12 +53,27 @@
     <string name="usernameExistanceError">Ce pseudo existe déjà</string>
     <string name="mailExistError">Ce mail existe déjà</string>
     <string name="authentificationLabel"> Authentification</string>
-    <string name="notAuthMsg">N est pas authentifié</string>
+    <string name="notAuthMsg">Probléme d\'authentification</string>
     <string name="checkPswdMsg">Verifiez votre mot de passe</string>
     <string name="sorryLabel">Désolé</string>
-    <string name="UsernameNotExistError">Ce pseudo n existe pas</string>
+    <string name="UsernameNotExistError">Ce pseudo n\'existe pas</string>
     <string name="zeroMarkersMsg">Aucun pin à charger</string>
     <string name="registrationLabel">Inscription</string>
     <string name="feedbackSentMsg">Feedback envoyé</string>
     <string name="dataChangedMsg">Profile mis à jour</string>
+    <string name="marketToast">Application introuvable</string>
+    <string name="userAddedToast">Compte crée </string>
+    <string name="settings">Paramétres</string>
+    <string name="my_history">Mon historique</string>
+    <string name="rate_me">Évaluation</string>
+    <string name="PasswordForgotten">Mot de passe oublié</string>
+    <string name="usernameDontExistError">Utilisateur introuvable</string>
+    <string name="repeat_password">Retaper le mot de passe</string>
+    <string name="date_of_birth">Date de naissance</string>
+    <string name="current_password">Mot de passe actuel</string>
+    <string name="new_password">Nouveau mot de passe </string>
+    <string name="renter_new_password">Retaper le nouveau mot de passe</string>
+    <string name="sign_up">S\'inscrire</string>
+    <string name="log_out">Se déconnecter</string>
+    <string name="pswdsNotAlike">les mots de passe ne sont pas identiques</string>
 </resources>

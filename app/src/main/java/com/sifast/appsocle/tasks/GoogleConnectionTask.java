@@ -24,8 +24,6 @@ public class GoogleConnectionTask extends AsyncTask {
         this.authentifcatedUser= authentifcatedUser;
         this.sharedPreferences = sharedPreferences;
     }
-
-
     public void regiterUserSharePreferences(User authentifcatedUser){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(loginActicity.getApplicationContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();

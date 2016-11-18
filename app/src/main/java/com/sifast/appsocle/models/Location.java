@@ -10,17 +10,7 @@ public class Location {
         this.longitude = longitude;
         this.latitude = latitude;
     }
-
     public Location(){}
-
-    @Override
-    public String toString() {
-        return "Location{" +
-                "longitude=" + longitude +
-                ", latitude=" + latitude +
-                '}';
-    }
-
     public double getLongitude() {
         return longitude;
     }

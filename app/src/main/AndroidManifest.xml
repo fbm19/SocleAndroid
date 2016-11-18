@@ -29,7 +29,7 @@
             android:name=".views.Login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".views.Registeration"
+            android:name=".views.Registration"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!--

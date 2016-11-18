@@ -7,7 +7,6 @@
     android:layout_gravity="center_horizontal"
     android:gravity="center_vertical">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
         android:orientation="horizontal"
@@ -38,7 +37,7 @@
             android:id="@+id/txtCurrentPassword"
             android:inputType="textPassword"
             android:layout_weight="1"
-            android:hint="Current Password"
+            android:hint="@string/current_password"
             android:padding="4dp"/>
 
 
@@ -55,7 +54,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/txtNewPassword"
             android:inputType="textPassword"
-            android:hint="New Password"
+            android:hint="@string/new_password"
             android:layout_weight="1"
             android:padding="4dp"/>
 
@@ -72,15 +71,12 @@
         android:layout_gravity="center_horizontal">
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtRenterNewPassword"
             android:inputType="textPassword"
-            android:hint="Renter new password"
-            android:layout_weight="1"
+            android:hint="@string/renter_new_password"
             android:padding="4dp"/>
-
-
 
 
     </LinearLayout>

@@ -26,11 +26,6 @@ import com.sifast.appsocle.views.Home;
 public class ConnectionTask extends AsyncTask {
 
     private Context context;
-
-    // TODO this attributes should be remouved
-    private User user2;
-    private String test;
-
     private User authentifcatedUser;
     private Activity loginActicity;
     private ProgressDialog progress;
@@ -44,18 +39,14 @@ public class ConnectionTask extends AsyncTask {
 
     @Override
     protected Object doInBackground(Object[] params) {
-
         connect();
-
-        return test;
+        return null;
     }
 
-    public String connect() {
+    public void connect() {
         //setting connexion parameter
-        // rename it "restWsUrl"
         String restWsUrl =loginActicity.getResources().getString(R.string.dbUsersUrl);
         Query query = new Firebase(restWsUrl).orderByChild("username").equalTo(authentifcatedUser.getUsername());
-
         //dialog to say to the user that he must wait
         loginActicity.runOnUiThread(new Runnable() {
             @Override
@@ -64,10 +55,8 @@ public class ConnectionTask extends AsyncTask {
                         loginActicity.getBaseContext().getResources().getString(R.string.waitMsg), true);
             }
         });
-
         //get the data from th DB
         query.addListenerForSingleValueEvent(new ValueEventListener() {
-
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //checking if the user exist
@@ -81,7 +70,6 @@ public class ConnectionTask extends AsyncTask {
                             loginActicity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-
                                     AlertDialog.Builder alert = new AlertDialog.Builder(loginActicity);
                                     alert.setTitle(loginActicity.getBaseContext().getResources().getString(R.string.notAuthMsg));
                                     alert.setMessage(loginActicity.getBaseContext().getResources().getString(R.string.checkPswdMsg));
@@ -89,11 +77,8 @@ public class ConnectionTask extends AsyncTask {
                                 }
                             });
                         }
-
                         //if the password is true , the data will be storaged in the sharedPreferences file and a Home activity will be launched
-
                         else {
-
                             //launching the Home activity
                             //submiting data in the sharedpreferences file
                             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(loginActicity.getApplicationContext());
@@ -105,10 +90,7 @@ public class ConnectionTask extends AsyncTask {
                             //opening the home activity
                             Intent i = new Intent(loginActicity, Home.class);
                             loginActicity.startActivity(i);
-
                         }
-
-
                         //dismissing the dialog
                         loginActicity.runOnUiThread(new Runnable() {
                             @Override
@@ -119,8 +101,7 @@ public class ConnectionTask extends AsyncTask {
 
                     }
                 }
-
-                //if the user do not exist
+                    //if the user do not exist
                 else {
 
                     //dismissing the dialog
@@ -130,14 +111,13 @@ public class ConnectionTask extends AsyncTask {
                             progress.dismiss();
                         }
                     });
-
                     //alert that username do not exist
                     loginActicity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             AlertDialog.Builder alert = new AlertDialog.Builder(loginActicity);
                             alert.setTitle(loginActicity.getBaseContext().getResources().getString(R.string.sorryLabel));
-                            alert.setMessage(loginActicity.getBaseContext().getResources().getString(R.string.usernameExistanceError));
+                            alert.setMessage(loginActicity.getBaseContext().getResources().getString(R.string.usernameDontExistError));
                             alert.show();
                         }
                     });
@@ -150,7 +130,7 @@ public class ConnectionTask extends AsyncTask {
             }
         });
 
-        return test;
+
     }
 
 
@@ -160,18 +140,6 @@ public class ConnectionTask extends AsyncTask {
 
     public void setAuthentifcatedUser(User authentifcatedUser) {
         this.authentifcatedUser = authentifcatedUser;
-    }
-
-    public String getTest() {
-        return test;
-    }
-
-    public void setTest(String test) {
-        this.test = test;
-    }
-
-    public User getUser() {
-        return this.user2;
     }
 
     public Activity getLoginActicity() {
@@ -188,14 +156,6 @@ public class ConnectionTask extends AsyncTask {
 
     public void setContext(Context context) {
         this.context = context;
-    }
-
-    public User getUser2() {
-        return user2;
-    }
-
-    public void setUser2(User user2) {
-        this.user2 = user2;
     }
 
     public ProgressDialog getProgress() {

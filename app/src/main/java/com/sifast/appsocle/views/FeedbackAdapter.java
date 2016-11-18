@@ -16,11 +16,8 @@ import java.util.List;
  * Created by Asus on 18/07/2016.
  */
 public class FeedbackAdapter extends ArrayAdapter<Feedback> {
-
     private Context context;
-
     public FeedbackAdapter(Context context, List<Feedback> feedbackList) {
-
         super(context, R.layout.cardlayout, feedbackList);
         this.context = context;
     }

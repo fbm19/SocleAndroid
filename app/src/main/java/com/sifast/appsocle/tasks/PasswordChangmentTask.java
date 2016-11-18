@@ -21,27 +21,22 @@ public class PasswordChangmentTask extends AsyncTask {
     Activity loginActicity;
     String mail;
     private SecureRandom random = new SecureRandom();
-
     public PasswordChangmentTask(Activity loginActicity, String mail) {
         this.loginActicity = loginActicity;
         this.mail = mail;
     }
-
     // function to generate passwords
     int numBits=20;
     public String generatePassword() {
         return new BigInteger(numBits, random).toString(numBits);
     }
-
     public void resetPassword() {
         String dbUsersUrl  =loginActicity.getResources().getString(R.string.dbUsersUrl);;
         //setting connexion parameter
         final Firebase ref = new Firebase(dbUsersUrl);
         Query query = ref.orderByChild("email").equalTo(mail);
-
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             String newPass = generatePassword();
-
             //set the new password in the db
             @Override
             public void onDataChange(com.firebase.client.DataSnapshot snapshot) {
@@ -62,7 +57,6 @@ public class PasswordChangmentTask extends AsyncTask {
                     new MailSendingTask().execute(email, passwordMail, toEmailList, subject, emailResetPassswordtext1 + newPass + emailResetPassswordtext2);
                 }
             }
-
             @Override
             public void onCancelled(FirebaseError firebaseError) {
             }

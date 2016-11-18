@@ -14,10 +14,6 @@ import com.sifast.appsocle.R;
 
 
 public class About extends Fragment {
-
-    //the text view which is holding the version
-    private TextView txtVersion;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,26 +25,23 @@ public class About extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_about, container, false);
     }
-
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-        versioDisplay();
+        versionDisplay();
         super.onViewCreated(view, savedInstanceState);
 
     }
-
-    public void versioDisplay() {
+    public void versionDisplay() {
         //a function to display the version in the txt view
-        //TODO handle this exception add a dialog or something like that
         PackageInfo packageInfo = null;
         try {
-            packageInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+             packageInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             Log.e("Gradle Problem","Can t get version");
         }
         String version = packageInfo.versionName;
-        txtVersion = (TextView) getView().findViewById(R.id.txtVersion);
+        //the text view which is holding the version
+        TextView txtVersion = (TextView) getView().findViewById(R.id.txtVersion);
         txtVersion.setText(txtVersion.getText() + " " + version);
-
     }
 }

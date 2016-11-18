@@ -28,17 +28,18 @@ import java.util.regex.Pattern;
 
 public class FragSettings extends Fragment {
 
-    private EditText txtResetEmail,txtNewPassword,txtRepeatPassword,txtCurrentPassword;
-    private Button butEditMail,  butSaveData;
+    private EditText txtResetEmail;
+    private EditText txtNewPassword;
+    private EditText txtRepeatPassword;
+    private EditText txtCurrentPassword;
+    private Button   butSaveData;
     private User authUser;
     private SharedPreferences sharedPreferences;
     private String email, password, username;
     boolean checkInputs = true;
-
     public FragSettings(User authUser) {
         this.authUser = authUser;
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,34 +65,27 @@ public class FragSettings extends Fragment {
         //calling the procedures
         checkEmail();
         checkCurrentPassword();
-       checkRepeatPassword();
+        checkRepeatPassword();
         checkPasswordLength();
         saveData();
         super.onViewCreated(view, savedInstanceState);
 
     }
 public void checkCurrentPassword(){
-
-
-
     TextWatcher fieldValidatorTextWatcher = new TextWatcher() {
         @Override
         public void afterTextChanged(Editable s) {
         }
-
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
-
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                if(! String.valueOf(txtCurrentPassword.getText()).equals(password)){
+            if(! String.valueOf(txtCurrentPassword.getText()).equals(password)){
                     txtCurrentPassword.setError(getActivity().getBaseContext().getResources().getString(R.string.wrongPasswordError));
                     checkInputs=false;
                 }
                 else checkInputs=true;
-
         }
     };
     txtCurrentPassword.addTextChangedListener(fieldValidatorTextWatcher);
@@ -139,9 +133,7 @@ public void checkCurrentPassword(){
     }
 
     public void checkEmail() {
-
         Firebase.setAndroidContext(getActivity());
-
         TextWatcher fieldValidatorTextWatcher = new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -159,11 +151,8 @@ public void checkCurrentPassword(){
                     String dbUsersUrl=getActivity().getResources().getString(R.string.dbUsersUrl);
                     final Firebase ref = new Firebase(dbUsersUrl);
                     Query query = ref.orderByChild("email").equalTo(String.valueOf(txtResetEmail.getText().toString()));
-
-
                     //get the data from th DB
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
-
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             //checking if the user exist
@@ -173,13 +162,9 @@ public void checkCurrentPassword(){
                                 checkInputs=false;
                             }
                             else checkInputs=true;
-
-
                         }
-
                         @Override
                         public void onCancelled(FirebaseError firebaseError) {
-
                         }
                     });
                 } else {
@@ -190,14 +175,11 @@ public void checkCurrentPassword(){
             }
         };
         txtResetEmail.addTextChangedListener(fieldValidatorTextWatcher);
-
-
     }
 
     public void checkPasswordLength() {
-final int minPasswordLength=5;
+    final int minPasswordLength=5;
         Firebase.setAndroidContext(getActivity());
-
         TextWatcher fieldValidatorTextWatcher = new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -218,20 +200,12 @@ final int minPasswordLength=5;
                 else  checkInputs=true;
 
             }
-
-
-
-
         };
         txtNewPassword.addTextChangedListener(fieldValidatorTextWatcher);
-
-
     }
 
     public void checkRepeatPassword() {
-
         Firebase.setAndroidContext(getActivity());
-
         TextWatcher fieldValidatorTextWatcher = new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -249,14 +223,9 @@ final int minPasswordLength=5;
                     checkInputs = false;
                 }
                 else checkInputs=true;
-
             }
-
-
         };
         txtRepeatPassword.addTextChangedListener(fieldValidatorTextWatcher);
-
-
     }
 
     public User getAuthUser() {

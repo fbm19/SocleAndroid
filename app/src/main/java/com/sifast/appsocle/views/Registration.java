@@ -27,13 +27,15 @@ import java.util.regex.Pattern;
 
 import static android.widget.Toast.LENGTH_LONG;
 
-public class Registeration extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+public class Registration extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     boolean checkInputs = true;
     private User registeredUser;
     private Button butSignUp,butCalendar;
-    private EditText txtUsername, txtEmail, txtPassword, txtRepeatedPassword, txtDateOfBirth;
-
-
+    private EditText txtUsername;
+    private EditText txtEmail;
+    private EditText txtPassword;
+    private EditText txtRepeatedPassword;
+    private EditText txtDateOfBirth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,30 +56,20 @@ public class Registeration extends AppCompatActivity implements DatePickerDialog
     }
 
 public void pickDate(){
-
     butCalendar.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Calendar now = Calendar.getInstance();
             DatePickerDialog dpd = DatePickerDialog.newInstance(
-                    (DatePickerDialog.OnDateSetListener) Registeration.this,
+                    (DatePickerDialog.OnDateSetListener) Registration.this,
                     now.get(Calendar.YEAR),
                     now.get(Calendar.MONTH),
                     now.get(Calendar.DAY_OF_MONTH)
             );
             dpd.setAccentColor(Color.rgb(104,47,132));
             dpd.show(getFragmentManager(), "Datepickerdialog");
-
-
-
-        }
-    });
-
-
-
-
+        } });
 }
-
 
     public void signUp() {
         //a function called once you click on signUp button
@@ -93,51 +85,41 @@ public void pickDate(){
                 //setting the registered user
                 registeredUser = new User(username, password, email, dateOfBirh, signUpDate.toString());
                 if (checkInputs) {
-                    RegistrationTask registerTask = new RegistrationTask(getRegisteredUser(), Registeration.this);
+                    RegistrationTask registerTask = new RegistrationTask(getRegisteredUser(), Registration.this);
                     registerTask.execute();
                     txtUsername.setText("");
                     txtEmail.setText("");
                     txtDateOfBirth.setText("");
                     txtPassword.setText("");
                     txtRepeatedPassword.setText("");
-                    Toast.makeText(getApplicationContext(),"User added successfully",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),getBaseContext().getResources().getString(R.string.userAddedToast),Toast.LENGTH_LONG).show();
                 } else {
                     String inputsErrorMsg = getBaseContext().getResources().getString(R.string.checkInputsMsg);
                     Toast.makeText(getApplicationContext(), inputsErrorMsg, LENGTH_LONG).show();
                 }
-
             }
         });
-
     }
 
 
 
     public void checkUsername() {
-
         Firebase.setAndroidContext(getApplicationContext());
-
         TextWatcher fieldValidatorTextWatcher = new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
             }
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                //setting connexion parameter
+            //setting connexion parameter
                 String dbUsersUrl =getApplicationContext().getResources().getString(R.string.dbUsersUrl);
                 final Firebase ref = new Firebase(dbUsersUrl);
                 Query query = ref.orderByChild("username").equalTo(String.valueOf(txtUsername.getText()));
-
-
                 //get the data from th DB
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
-
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //checking if the user exist
@@ -146,22 +128,15 @@ public void pickDate(){
                             txtUsername.setError(usernameExistanceError);
                             checkInputs = false;
                         }
-
-else checkInputs=true;
+                        else checkInputs=true;
                     }
-
                     @Override
                     public void onCancelled(FirebaseError firebaseError) {
-
                     }
                 });
             }
-
-
         };
         txtUsername.addTextChangedListener(fieldValidatorTextWatcher);
-
-
     }
 
     private boolean validEmail(String email) {
@@ -170,9 +145,7 @@ else checkInputs=true;
     }
 
     public void checkEmail() {
-
         Firebase.setAndroidContext(getApplicationContext());
-
         TextWatcher fieldValidatorTextWatcher = new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -190,8 +163,6 @@ else checkInputs=true;
                     String dbUsersUrl =getApplicationContext().getResources().getString(R.string.dbUsersUrl);
                     final Firebase ref = new Firebase(dbUsersUrl);
                     Query query = ref.orderByChild("email").equalTo(String.valueOf(txtEmail.getText()));
-
-
                     //get the data from th DB
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -203,13 +174,10 @@ else checkInputs=true;
                                 txtEmail.setError(emailExistanceError);
                                 checkInputs = false;
                             }
-
-else checkInputs=true;
+                            else checkInputs=true;
                         }
-
                         @Override
                         public void onCancelled(FirebaseError firebaseError) {
-
                         }
                     });
                 } else {
@@ -220,26 +188,19 @@ else checkInputs=true;
             }
         };
         txtEmail.addTextChangedListener(fieldValidatorTextWatcher);
-
-
     }
-
     public void checkPasswordLength() {
 final int minPasswordLength=5;
         Firebase.setAndroidContext(getApplicationContext());
-
         TextWatcher fieldValidatorTextWatcher = new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
             }
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                 if (txtPassword.getText().length() < minPasswordLength) {
                     String passwordLengthErrorMsg=getBaseContext().getResources().getString(R.string.pswdShortError);
                     txtPassword.setError(passwordLengthErrorMsg);
@@ -248,18 +209,12 @@ final int minPasswordLength=5;
                 else
                     checkInputs=true;
             }
-
-
         };
         txtPassword.addTextChangedListener(fieldValidatorTextWatcher);
-
-
     }
 
     public void checkRepeatPassword() {
-
         Firebase.setAndroidContext(getApplicationContext());
-
         TextWatcher fieldValidatorTextWatcher = new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -273,18 +228,14 @@ final int minPasswordLength=5;
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 if (!String.valueOf(txtPassword.getText()).equals(String.valueOf(txtRepeatedPassword.getText()))) {
-                    String passwordsErrorMsg="passwords are not alike";
+                    String passwordsErrorMsg=getBaseContext().getResources().getString(R.string.pswdsNotAlike) ;
                     txtRepeatedPassword.setError(passwordsErrorMsg);
                     checkInputs = false;
                 }
                 else checkInputs=true;
             }
-
-
         };
         txtRepeatedPassword.addTextChangedListener(fieldValidatorTextWatcher);
-
-
     }
     public User getRegisteredUser() {
         return registeredUser;
